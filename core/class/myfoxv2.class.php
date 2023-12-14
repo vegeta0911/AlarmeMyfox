@@ -23,13 +23,13 @@ define('MYFOXURL', 'https://api.myfox.me:443/v2');
 define('TOKEN_ENDPOINT','https://api.myfox.me/oauth2/token');
 //include_file('core', 'myfoxv2', 'config' , 'myfoxv2');
 
-class myfoxv2 extends eqLogic {
+class Alarmemyfox extends eqLogic {
 	
 	public static function deamon_info() {
 		$return = array();
 		$return['log'] = '';
 		$return['state'] = 'nok';
-		$cron = cron::byClassAndFunction('myfoxv2', 'pull');
+		$cron = cron::byClassAndFunction('Alarmemyfox', 'pull');
 		if (is_object($cron) && $cron->running()) {
 			$return['state'] = 'ok';
 		}
@@ -40,26 +40,26 @@ class myfoxv2 extends eqLogic {
 	public static function deamon_start($_debug = false) {
 		//maj des crons suite a mise a jour plugin en deamon
 		
-		 $cron = cron::byClassAndFunction('myfoxv2', 'maj');
+		 $cron = cron::byClassAndFunction('Alarmemyfox', 'maj');
 			if (is_object($cron)) {
 		$cron->remove();
 	   
 			}
     
       
-    $cronP = cron::byClassAndFunction('myfoxv2', 'pull');
+    $cronP = cron::byClassAndFunction('Alarmemyfox', 'pull');
 	  if (!is_object($cronP)) {
 				$cronP = new cron();
-				$cronP->setClass('myfoxv2');
+				$cronP->setClass('Alarmemyfox');
 				$cronP->setFunction('pull');
-				$cronP->setOption(array('myfoxv2_id' => intval($this->getId())));
+				$cronP->setOption(array('Alarmemyfox_id' => intval($this->getId())));
 				$cronP->setLastRun(date('Y-m-d H:i:s'));
 				$cronP->setEnable(1);
 				$cronP->setDeamon(1);
 				$cronP->setTimeout('30');
 				$cronP->setSchedule('* * * * *');
 				$cronP->save();
-				log::add('myfoxv2', 'debug', 'addCron');
+				log::add('Alarmemyfox', 'debug', 'addCron');
 
 	  }
 		
@@ -70,7 +70,7 @@ class myfoxv2 extends eqLogic {
 		if ($deamon_info['launchable'] != 'ok') {
 			throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
 		}
-		$cron = cron::byClassAndFunction('myfoxv2', 'pull');
+		$cron = cron::byClassAndFunction('Alarmemyfox', 'pull');
 		if (!is_object($cron)) {
 			throw new Exception(__('Tache cron introuvable', __FILE__));
 		}
@@ -87,7 +87,7 @@ class myfoxv2 extends eqLogic {
         }
     }*/
 	public static function deamon_stop() {
-		$cron = cron::byClassAndFunction('myfoxv2', 'pull');
+		$cron = cron::byClassAndFunction('Alarmemyfox', 'pull');
 		if (!is_object($cron)) {
 			throw new Exception(__('Tache cron introuvable', __FILE__));
 		}
@@ -99,8 +99,8 @@ class myfoxv2 extends eqLogic {
 	public static function pull() {
       $deamon_info = self::deamon_info();
 	 //var_dump($deamon_info['state']);
-      if (is_array(eqLogic::byType('myfoxv2')) == true){
-	foreach(eqLogic::byType('myfoxv2') as $eqLogic){
+      if (is_array(eqLogic::byType('Alarmemyfox')) == true){
+	foreach(eqLogic::byType('Alarmemyfox') as $eqLogic){
    if (is_object($eqLogic) && $eqLogic->getIsEnable() == 1) {		
 			
 				foreach($eqLogic->getCmd('info') as $Commande){
@@ -119,15 +119,15 @@ class myfoxv2 extends eqLogic {
 
 	
 	public function checkCredential() {
-				$token=$this->getConfiguration('myfoxv2Token');
-				$tokenExpire=$this->getConfiguration('myfoxv2TokenExpire');
+				$token=$this->getConfiguration('AlarmemyfoxToken');
+				$tokenExpire=$this->getConfiguration('AlarmemyfoxTokenExpire');
 				
 		if (($token=='') ||  (time() > $tokenExpire)){ 
 		
-				$password=$this->getConfiguration('myfoxv2Password');
-                $username=$this->getConfiguration('myfoxv2Username');
-                $client_id=$this->getConfiguration('myfoxv2ClientId');
-                $client_secret=$this->getConfiguration('myfoxv2ClientSecret');
+		$password=$this->getConfiguration('AlarmemyfoxPassword');
+                $username=$this->getConfiguration('AlarmemyfoxUsername');
+                $client_id=$this->getConfiguration('AlarmemyfoxClientId');
+                $client_secret=$this->getConfiguration('AlarmemyfoxClientSecret');
 		
 				
 		
@@ -145,7 +145,7 @@ class myfoxv2 extends eqLogic {
 	
 		
 		
-		log::add('myfoxv2', 'debug','token credential : ' .$auth); 
+		log::add('Alarmemyfox', 'debug','token credential : ' .$auth); 
 			
 			return $auth;
 			
@@ -157,13 +157,13 @@ class myfoxv2 extends eqLogic {
 	
 	public function getToken() {
 	  //$this = $this->getEqLogic();
-				$token=$this->getConfiguration('myfoxv2Token');
-				$tokenExpire=$this->getConfiguration('myfoxv2TokenExpire');
-				$tokenRefresh=$this->getConfiguration('myfoxv2TokenRefresh');
-                $password=$this->getConfiguration('myfoxv2Password');
-                $username=$this->getConfiguration('myfoxv2Username');
-                $client_id=$this->getConfiguration('myfoxv2ClientId');
-                $client_secret=$this->getConfiguration('myfoxv2ClientSecret');
+		$token=$this->getConfiguration('AlarmemyfoxToken');
+		$tokenExpire=$this->getConfiguration('AlarmemyfoxTokenExpire');
+		$tokenRefresh=$this->getConfiguration('AlarmemyfoxTokenRefresh');
+                $password=$this->getConfiguration('AlarmemyfoxPassword');
+                $username=$this->getConfiguration('AlarmemyfoxUsername');
+                $client_id=$this->getConfiguration('AlarmemyfoxClientId');
+                $client_secret=$this->getConfiguration('AlarmemyfoxClientSecret');
 	
 				
 			if(($token!=='') AND  (time() < $tokenExpire)){ 
@@ -178,7 +178,7 @@ class myfoxv2 extends eqLogic {
 		curl_setopt( $curl, CURLOPT_POST, true );
 		curl_setopt( $curl, CURLOPT_POSTFIELDS, array(
     				'grant_type' => 'refresh_token',
-					'refresh_token' => $tokenRefresh,
+				'refresh_token' => $tokenRefresh,
 			        'client_id' => $client_id,
 			        'client_secret' => $client_secret,
 					
@@ -194,22 +194,22 @@ class myfoxv2 extends eqLogic {
         }  
 		if (isset($err)) { 
          
-			log::add('myfoxv2', 'error','erreur myfoxv2 : ' .$auth); 
-			$this->setConfiguration('myfoxv2Token','');
-			$this->setConfiguration('myfoxv2TokenExpire','');
-			$this->setConfiguration('myfoxv2TokenRefresh','');
+			log::add('Alarmemyfox', 'error','erreur Alarmemyfox : ' .$auth); 
+			$this->setConfiguration('AlarmemyfoxToken','');
+			$this->setConfiguration('AlarmemyfoxTokenExpire','');
+			$this->setConfiguration('AlarmemyfoxTokenRefresh','');
 			$this->save();
 			return $err;
 		}
 		else {
-		    $token = $secret->access_token;
+		        $token = $secret->access_token;
 			$tokenexpire = $secret->expires_in;
 			$tokenrefresh = $secret->refresh_token;
 			//log::add('myfoxv2','debug', 'secret2 token  ' .$token);
 			
-			$this->setConfiguration('myfoxv2Token',$token);
-			$this->setConfiguration('myfoxv2TokenExpire',time()+($tokenexpire-300));
-			$this->setConfiguration('myfoxv2TokenRefresh',$tokenrefresh);
+			$this->setConfiguration('AlarmemyfoxToken',$token);
+			$this->setConfiguration('AlarmemyfoxTokenExpire',time()+($tokenexpire-300));
+			$this->setConfiguration('AlarmemyfoxTokenRefresh',$tokenrefresh);
 			$this->save();
 		}
 		//log::add('Myfox','debug', 'tokenrefreshnew  '. $token);
@@ -231,23 +231,23 @@ class myfoxv2 extends eqLogic {
 		$err = $secret->error;
 		if ($err) { 
 		    
-			log::add('myfoxv2', 'error','erreur myfoxv2 : ' .$auth); 
-			$this->setConfiguration('myfoxv2Token','');
-			$this->setConfiguration('myfoxv2TokenExpire','');
-			$this->setConfiguration('myfoxv2TokenRefresh','');
+			log::add('Alarmemyfox', 'error','erreur Alarmemyfox : ' .$auth); 
+			$this->setConfiguration('AlarmemyfoxToken','');
+			$this->setConfiguration('AlarmemyfoxTokenExpire','');
+			$this->setConfiguration('AlarmemyfoxTokenRefresh','');
 			$this->save();
 			
 			return $err;
 		}
 		else {
-		    $token = $secret->access_token;
+		        $token = $secret->access_token;
 			$tokenexpire = $secret->expires_in;
 			$tokenrefresh = $secret->refresh_token;
-			log::add('myfoxv2', 'debug', "tokencreate ".$token);
+			log::add('Alarmemyfox', 'debug', "tokencreate ".$token);
 			
-			$this->setConfiguration('myfoxv2Token',$token);
-			$this->setConfiguration('myfoxv2TokenExpire',time()+($tokenexpire-300));
-			$this->setConfiguration('myfoxv2TokenRefresh',$tokenrefresh);
+			$this->setConfiguration('AlarmemyfoxToken',$token);
+			$this->setConfiguration('AlarmemyfoxTokenExpire',time()+($tokenexpire-300));
+			$this->setConfiguration('AlarmemyfoxTokenRefresh',$tokenrefresh);
 			$this->save();
 		}
 		//log::add('Myfox', 'tokennew', $token);
@@ -257,10 +257,10 @@ class myfoxv2 extends eqLogic {
 	}
 	
 	public function eraseConfToken() {
-		$erase = myfoxv2::byId($this->getId());
-		$erase->setConfiguration('myfoxv2Token','');
-		$erase->setConfiguration('myfoxv2TokenExpire','');
-		$erase->setConfiguration('myfoxv2TokenRefresh','');
+		$erase = Alarmemyfox::byId($this->getId());
+		$erase->setConfiguration('AlarmemyfoxToken','');
+		$erase->setConfiguration('AlarmemyfoxTokenExpire','');
+		$erase->setConfiguration('AlarmemyfoxTokenRefresh','');
 		$erase->save();
 			
 		
@@ -272,7 +272,7 @@ class myfoxv2 extends eqLogic {
 	//log::add('myfoxv2', 'debug', 'force ' .$force);
 	   return $this->getConfiguration('siteId');
 	} else {
-		log::add('myfoxv2', 'debug', 'siteIdReload');
+		log::add('Alarmemyfox', 'debug', 'siteIdReload');
 		
 		$api_url = MYFOXURL . "/client/site/items?access_token=" . $token;
 		$requete = @file_get_contents($api_url);
@@ -297,7 +297,7 @@ class myfoxv2 extends eqLogic {
 	
 	public function getDeviceType($type) {
 		
-		$api_url = MYFOXURL . "/site/".$this->getConfiguration('siteId')."/device/".$type."/items?access_token=" . $this->getConfiguration('myfoxv2Token');
+		$api_url = MYFOXURL . "/site/".$this->getConfiguration('siteId')."/device/".$type."/items?access_token=" . $this->getConfiguration('AlarmemyfoxToken');
 		//log::add('Myfox', 'debug', 'api url get device type'.$api_url);
 		$requete1 = @file_get_contents($api_url);
 		$json_result = json_decode($requete1,true);
@@ -312,7 +312,7 @@ class myfoxv2 extends eqLogic {
 	
 	public function getSite($type) {
 		
-		$api_url = MYFOXURL . "/site/".$this->getConfiguration('siteId')."/".$type."/items?access_token=" . $this->getConfiguration('myfoxv2Token');
+		$api_url = MYFOXURL . "/site/".$this->getConfiguration('siteId')."/".$type."/items?access_token=" . $this->getConfiguration('AlarmemyfoxToken');
 		//log::add('Myfox', 'debug', 'api url get device type'.$api_url);
 		$requete1 = @file_get_contents($api_url);
 		$json_result = json_decode($requete1,true);
@@ -328,7 +328,7 @@ class myfoxv2 extends eqLogic {
 	public function createDevice($type,$value) {
 	
 		if($value > '0' ) {
-			$myfoxData=myfoxv2::getDeviceType($type);
+			$myfoxData=Alarmemyfox::getDeviceType($type);
 			if($myfoxData!=='error') {
 			
 		//Boucle sur retour json
@@ -349,7 +349,7 @@ class myfoxv2 extends eqLogic {
 									
 								$aCmd = $this->getCmd(null, $logicID);
 								if (!is_object($aCmd)) {
-								$aCmd = new myfoxv2Cmd();
+								$aCmd = new AlarmemyfoxCmd();
 								$aCmd->setLogicalId($logicID);
 								$aCmd->setIsVisible(0);
 								$aCmd->setName(__($v1["label"].' '.str_replace($initial,$replace,$OpenClose), __FILE__));
@@ -421,19 +421,19 @@ class myfoxv2 extends eqLogic {
 
     public function preUpdate() {
 	
-        if ($this->getConfiguration('myfoxv2ClientSecret') == '') {
+        if ($this->getConfiguration('AlarmemyfoxClientSecret') == '') {
             throw new Exception(__('Le Client Secret ne peut être vide', __FILE__));
         }
 
-        if ($this->getConfiguration('myfoxv2ClientId') == '') {
+        if ($this->getConfiguration('AlarmemyfoxClientId') == '') {
             throw new Exception(__('Le Client ID ne peut être vide', __FILE__));
         }
 
-        if ($this->getConfiguration('myfoxv2Username') == '') {
+        if ($this->getConfiguration('AlarmemyfoxUsername') == '') {
             throw new Exception(__('Le Username ne peut être vide', __FILE__));
         }
 
-        if ($this->getConfiguration('myfoxv2Password') == '') {
+        if ($this->getConfiguration('AlarmemyfoxPassword') == '') {
             throw new Exception(__('Le password ne peut être vide', __FILE__));
         }
 		
@@ -449,36 +449,36 @@ class myfoxv2 extends eqLogic {
 		
 			$myfoxErrorToken=myfoxv2::checkCredential();
 			//$cron = cron::byClassAndFunction('myfoxv2', 'pull',array('myfoxv2_id' => intval($this->getId())));
-			$cron = cron::byClassAndFunction('myfoxv2', 'pull');
+			$cron = cron::byClassAndFunction('Alarmemyfox', 'pull');
 			
 			
 	
-		log::add('myfoxv2', 'debug', 'PostUpdate : '.$myfoxErrorToken);
+		log::add('Alarmemyfox', 'debug', 'PostUpdate : '.$myfoxErrorToken);
 		if(preg_match("/error|blacklisted|KO|login|password/i", $myfoxErrorToken)) {
 			
 			 if (is_object($cron)) {
             $cron->stop();
             $cron->remove();
-			log::add('myfoxv2', 'debug', 'stopRemoveCron');
+			log::add('Alarmemyfox', 'debug', 'stopRemoveCron');
         }
 			throw new Exception(__($myfoxErrorToken, __FILE__));
 			
 		} 
 		
 		//on recheck les elements myfox 
-		$token = myfoxv2::getToken();	
-		$siteID = myfoxv2::getSiteId($token,true);
+		$token = Alarmemyfox::getToken();	
+		$siteID = Alarmemyfox::getSiteId($token,true);
 		log::add('myfoxv2', 'debug', 'siteId&Token : '.$token . ' ' .$siteID);
 			
       
 		if ($this->getConfiguration('deviceTemperatureCount') > '0') {
-		$myfoxData=myfoxv2::getDeviceType('data/temperature');
+		$myfoxData=Alarmemyfox::getDeviceType('data/temperature');
 		
 		foreach ($myfoxData as $key => $v1) {
 			
 		$temperature = $this->getCmd(null, 'temperature'.$v1["deviceId"]);
 		if (!is_object($temperature)) {
-			$temperature = new myfoxv2Cmd();
+			$temperature = new AlarmemyfoxCmd();
 			$temperature->setLogicalId('temperature'.$v1["deviceId"]);
 			$temperature->setIsVisible(1);
 			$temperature->setName(__('Temperature '.$v1["label"], __FILE__));
@@ -503,13 +503,13 @@ class myfoxv2 extends eqLogic {
 		}
 		
 		if ($this->getConfiguration('deviceLightCount') > '0') {
-		$myfoxData=myfoxv2::getDeviceType('data/light');
+		$myfoxData=Alarmemyfox::getDeviceType('data/light');
 		
 		foreach ($myfoxData as $key => $v1) {
 		
 		$luminosite = $this->getCmd(null, 'luminosite'.$v1["deviceId"]);
 		if (!is_object($luminosite)) {
-			$luminosite = new myfoxv2Cmd();
+			$luminosite = new AlarmemyfoxCmd();
 			$luminosite->setLogicalId('luminosite'.$v1["deviceId"]);
 			$luminosite->setIsVisible(1);
 			$luminosite->setName(__('Luminosite '.$v1["label"], __FILE__));
@@ -533,14 +533,14 @@ class myfoxv2 extends eqLogic {
 		}
 		
 		if ($this->getConfiguration('deviceDetectorCount') > '0') {
-		$myfoxData=myfoxv2::getDeviceType('data/other');
+		$myfoxData=Alarmemyfox::getDeviceType('data/other');
 		//var_dump($myfoxData);
        if (is_array($myfoxData)){
 		foreach ($myfoxData as $key => $v1) {
 		
 		$other = $this->getCmd(null, 'other'.$v1["deviceId"]);
 		if (!is_object($other)) {
-			$other = new myfoxv2Cmd();
+			$other = new AlarmemyfoxCmd();
 			$other->setLogicalId('other'.$v1["deviceId"]);
 			$other->setIsVisible(1);
 			$other->setName(__($v1["label"].' '.$v1["modelLabel"], __FILE__));
@@ -593,13 +593,13 @@ class myfoxv2 extends eqLogic {
 		}*/
 		
 		if ($this->getConfiguration('heaterCount') > '0') {
-		$myfoxData=myfoxv2::getDeviceType('heater');
+		$myfoxData=Alarmemyfox::getDeviceType('heater');
 		
 		foreach ($myfoxData as $key => $v1) {
 		
 		$heater = $this->getCmd(null, 'heater'.$v1["deviceId"]);
 		if (!is_object($heater)) {
-			$heater = new myfoxv2Cmd();
+			$heater = new AlarmemyfoxCmd();
 			$heater->setLogicalId('heater'.$v1["deviceId"]);
 			$heater->setIsVisible(1);
 			$heater->setName(__($v1["label"].' '.$v1["modelLabel"], __FILE__));
@@ -623,7 +623,7 @@ class myfoxv2 extends eqLogic {
 		
         $state1 = $this->getCmd(null, 'etat1');
 		if (!is_object($state1)) {
-			$state1 = new myfoxv2Cmd();
+			$state1 = new AlarmemyfoxCmd();
 			$state1->setLogicalId('etat1');
 			$state1->setIsVisible(1);
 			$state1->setName(__('Etat1', __FILE__));
@@ -644,7 +644,7 @@ class myfoxv2 extends eqLogic {
 		
 		$state = $this->getCmd(null, 'etat');
 		if (!is_object($state)) {
-			$state = new myfoxv2Cmd();
+			$state = new AlarmemyfoxCmd();
 			$state->setLogicalId('etat');
 			$state->setIsVisible(1);
 			$state->setName(__('Etat', __FILE__));
@@ -664,7 +664,7 @@ class myfoxv2 extends eqLogic {
 		
 		$Event_scenario = $this->getCmd(null, 'Event_scenario');
 		if (!is_object($Event_scenario)) {
-			$Event_scenario = new myfoxv2Cmd();
+			$Event_scenario = new AlarmemyfoxCmd();
 			$Event_scenario->setLogicalId('Event_scenario');
 			$Event_scenario->setIsVisible(1);
 			$Event_scenario->setName(__('Évènement scenario', __FILE__));
@@ -681,7 +681,7 @@ class myfoxv2 extends eqLogic {
 		
 		$Event_access = $this->getCmd(null, 'Event_access');
 		if (!is_object($Event_access)) {
-			$Event_access = new myfoxv2Cmd();
+			$Event_access = new AlarmemyfoxCmd();
 			$Event_access->setLogicalId('Event_access');
 			$Event_access->setIsVisible(1);
 			$Event_access->setName(__('Évènement accès', __FILE__));
@@ -698,7 +698,7 @@ class myfoxv2 extends eqLogic {
 		
 		$Event_account = $this->getCmd(null, 'Event_account');
 		if (!is_object($Event_account)) {
-			$Event_account = new myfoxv2Cmd();
+			$Event_account = new AlarmemyfoxCmd();
 			$Event_account->setLogicalId('Event_account');
 			$Event_account->setIsVisible(1);
 			$Event_account->setName(__('Évènement compte', __FILE__));
@@ -715,7 +715,7 @@ class myfoxv2 extends eqLogic {
 		
 		$Event_security = $this->getCmd(null, 'Event_security');
 		if (!is_object($Event_security)) {
-			$Event_security = new myfoxv2Cmd();
+			$Event_security = new AlarmemyfoxCmd();
 			$Event_security->setLogicalId('Event_security');
 			$Event_security->setIsVisible(1);
 			$Event_security->setName(__('Évènement sécurité', __FILE__));
@@ -732,7 +732,7 @@ class myfoxv2 extends eqLogic {
 		
 		$Event_config = $this->getCmd(null, 'Event_config');
 		if (!is_object($Event_config)) {
-			$Event_config = new myfoxv2Cmd();
+			$Event_config = new AlarmemyfoxCmd();
 			$Event_config->setLogicalId('Event_config');
 			$Event_config->setIsVisible(1);
 			$Event_config->setName(__('Évènement config', __FILE__));
@@ -749,7 +749,7 @@ class myfoxv2 extends eqLogic {
 		
 		$Event_diagnosis = $this->getCmd(null, 'Event_diagnosis');
 		if (!is_object($Event_diagnosis)) {
-			$Event_diagnosis = new myfoxv2Cmd();
+			$Event_diagnosis = new AlarmemyfoxCmd();
 			$Event_diagnosis->setLogicalId('Event_diagnosis');
 			$Event_diagnosis->setIsVisible(1);
 			$Event_diagnosis->setName(__('Évènement diagnostic', __FILE__));
@@ -766,7 +766,7 @@ class myfoxv2 extends eqLogic {
 		
 		$Event_homeAuto = $this->getCmd(null, 'Event_homeAuto');
 		if (!is_object($Event_homeAuto)) {
-			$Event_homeAuto = new myfoxv2Cmd();
+			$Event_homeAuto = new AlarmemyfoxCmd();
 			$Event_homeAuto->setLogicalId('Event_homeAuto');
 			$Event_homeAuto->setIsVisible(1);
 			$Event_homeAuto->setName(__('Évènement homeAuto', __FILE__));
@@ -783,7 +783,7 @@ class myfoxv2 extends eqLogic {
 		
 		$Event_alarm = $this->getCmd(null, 'Event_alarm');
 		if (!is_object($Event_alarm)) {
-			$Event_alarm = new myfoxv2Cmd();
+			$Event_alarm = new AlarmemyfoxCmd();
 			$Event_alarm->setLogicalId('Event_alarm');
 			$Event_alarm->setIsVisible(1);
 			$Event_alarm->setName(__('Évènement alarme', __FILE__));
@@ -801,7 +801,7 @@ class myfoxv2 extends eqLogic {
 		
 		$Event_Last = $this->getCmd(null, 'Event_Last');
 		if (!is_object($Event_Last)) {
-			$Event_Last = new myfoxv2Cmd();
+			$Event_Last = new AlarmemyfoxCmd();
 			$Event_Last->setLogicalId('Event_Last');
 			$Event_Last->setIsVisible(1);
 			$Event_Last->setName(__('Dernier évènement', __FILE__));
@@ -818,7 +818,7 @@ class myfoxv2 extends eqLogic {
 		
 		$aTotal = $this->getCmd(null, 'total');
 		if (!is_object($aTotal)) {
-			$aTotal = new myfoxv2Cmd();
+			$aTotal = new AlarmemyfoxCmd();
 			$aTotal->setLogicalId('total');
 			$aTotal->setIsVisible(1);
 			$aTotal->setName(__('Armement Total', __FILE__));
@@ -834,7 +834,7 @@ class myfoxv2 extends eqLogic {
 		
 		$aPartiel = $this->getCmd(null, 'partiel');
 		if (!is_object($aPartiel)) {
-			$aPartiel = new myfoxv2Cmd();
+			$aPartiel = new AlarmemyfoxCmd();
 			$aPartiel->setLogicalId('partiel');
 			$aPartiel->setIsVisible(1);
 			$aPartiel->setName(__('Armement Partiel', __FILE__));
@@ -849,7 +849,7 @@ class myfoxv2 extends eqLogic {
 		
 		$aDesarme = $this->getCmd(null, 'desarmer');
 		if (!is_object($aDesarme)) {
-			$aDesarme = new myfoxv2Cmd();
+			$aDesarme = new AlarmemyfoxCmd();
 			$aDesarme->setLogicalId('desarmer');
 			$aDesarme->setIsVisible(1);
 			$aDesarme->setName(__('Desarmer', __FILE__));
@@ -863,14 +863,14 @@ class myfoxv2 extends eqLogic {
 		$aDesarme->save();
 		
 		if ($this->getConfiguration('scenarioCount') > '0') {
-			$myfoxData=myfoxv2::getSite('scenario');
+			$myfoxData=Alarmemyfox::getSite('scenario');
 		
 		foreach ($myfoxData as $key => $v1) {
 			if($v1["typeLabel"]=="onDemand") {
 		
 		$scenario = $this->getCmd(null, 'scenario'.$v1["scenarioId"]);
 		if (!is_object($scenario)) {
-			$scenario = new myfoxv2Cmd();
+			$scenario = new AlarmemyfoxCmd();
 			$scenario->setLogicalId('scenario'.$v1["scenarioId"]);
 			$scenario->setIsVisible(1);
 			$scenario->setName(__('Scenario ' .$v1["label"], __FILE__));
@@ -898,8 +898,8 @@ class myfoxv2 extends eqLogic {
 		'module' =>  $this->getConfiguration('moduleCount'));
 	 
 	 foreach ($allDevices as $key => $v1) {
-			log::add('myfoxv2', 'debug', 'alldevice '.$key .'=>'. $v1);
-			$creation = myfoxv2::createDevice($key,$v1);
+			log::add('Alarmemyfox', 'debug', 'alldevice '.$key .'=>'. $v1);
+			$creation = Alarmemyfox::createDevice($key,$v1);
 			
 		}
 		
@@ -907,14 +907,14 @@ class myfoxv2 extends eqLogic {
 			
 			if (!is_object($cron)) {
 				$cron = new cron();
-				$cron->setClass('myfoxv2');
+				$cron->setClass('Alarmemyfox');
 				$cron->setFunction('pull');
-				$cron->setOption(array('myfoxv2_id' => intval($this->getId())));
+				$cron->setOption(array('Alarmemyfox_id' => intval($this->getId())));
 				$cron->setLastRun(date('Y-m-d H:i:s'));
 				$cron->setEnable(1);
 				$cron->setDeamon(1);
 				$cron->setTimeout('30');
-				log::add('myfoxv2', 'debug', 'addCron');
+				log::add('Alarmemyfox', 'debug', 'addCron');
 			}
 
 			$cron->setSchedule('* * * * *');
@@ -933,7 +933,7 @@ class myfoxv2 extends eqLogic {
 
 }
 
-class myfoxv2Cmd extends cmd {
+class AlarmemyfoxCmd extends cmd {
     /*     * *************************Attributs****************************** */
 
 
@@ -978,30 +978,30 @@ class myfoxv2Cmd extends cmd {
 	
     public function execute($_options = null) {
 	
-			$cron = cron::byClassAndFunction('myfoxv2', 'pull');
+			$cron = cron::byClassAndFunction('Alarmemyfox', 'pull');
         if (is_object($cron) && $cron->getEnable()) {
 				
 				
 		//log::add('myfoxv2', 'debug', 'tokenEndpointExecute : '.TOKEN_ENDPOINT);
-		log::add('myfoxv2', 'debug', 'request : '.$this->getConfiguration('request'));
+		log::add('Alarmemyfox', 'debug', 'request : '.$this->getConfiguration('request'));
 		
-	        $eqLogic_myfoxv2 = $this->getEqLogic();
-		if (is_object($eqLogic_myfoxv2)) {
-                $password=$eqLogic_myfoxv2->getConfiguration('myfoxv2Password');
+	        $eqLogic_Alarmemyfox = $this->getEqLogic();
+		if (is_object($eqLogic_Alarmemyfox)) {
+                $password=$eqLogic_myfoxv2->getConfiguration('AlarmemyfoxPassword');
 				//log::add('Myfox', 'pass', $password);
-                $username=$eqLogic_myfoxv2->getConfiguration('myfoxv2Username');
+                $username=$eqLogic_myfoxv2->getConfiguration('AlarmemyfoxUsername');
 				//log::add('Myfox', 'user', $username);
-                $client_id=$eqLogic_myfoxv2->getConfiguration('myfoxv2ClientId');
+                $client_id=$eqLogic_myfoxv2->getConfiguration('AlarmemyfoxClientId');
 				//log::add('Myfox', 'client', $client_id);
-                $client_secret=$eqLogic_myfoxv2->getConfiguration('myfoxv2ClientSecret');
+                $client_secret=$eqLogic_myfoxv2->getConfiguration('AlarmemyfoxClientSecret');
 				//log::add('Myfox', 'secret', $client_secret);
 		
 		
 
 		//get SiteId
 		
-		$token = $eqLogic_myfoxv2->getToken();
-		$siteid = $eqLogic_myfoxv2->getSiteId($token);
+		$token = $eqLogic_Alarmemyfox->getToken();
+		$siteid = $eqLogic_Alarmemyfox->getSiteId($token);
 	
 		
 		
@@ -1019,10 +1019,10 @@ class myfoxv2Cmd extends cmd {
         ///////////////ACTION A FAIRE EN FONCTION du getType() (demande de retour d'info)
 		if ($this->getType() == 'info') {
 		//Si LES DONNEES N'ONT PAS EXPIRE
-		  if ($eqLogic_myfoxv2->getCache($request_Cache)!=='' && time() < $eqLogic_myfoxv2->getCache('expiry'.$request_Cache)) {
-			log::add('myfoxv2', 'debug', 'donnees OK');
+		  if ($eqLogic_Alarmemyfox->getCache($request_Cache)!=='' && time() < $eqLogic_Alarmemyfox->getCache('expiry'.$request_Cache)) {
+			log::add('Alarmemyfox', 'debug', 'donnees OK');
 			//log::add('myfoxv2','debug','cache'.$eqLogic_myfoxv2->getCache($request_Cache));
-			$json_result = $eqLogic_myfoxv2->getCache($request_Cache);
+			$json_result = $eqLogic_Alarmemyfox->getCache($request_Cache);
 		
 		} else {
 		
@@ -1076,13 +1076,13 @@ class myfoxv2Cmd extends cmd {
 		}
 
 		$requete1 = @file_get_contents($api_url);
-		log::add('myfoxv2', 'debug', 'api call : '.$api_url);
+		log::add('Alarmemyfox', 'debug', 'api call : '.$api_url);
 		$json_result = json_decode($requete1,true);
 		
 	//	//on renregistre en BDD le retour API pour garder en memoire pdt 20 secondes le temps du traitement des autres valeurs
-		$eqLogic_myfoxv2->setCache($request_Cache,$json_result);
-		$eqLogic_myfoxv2->setCache('expiry'.$request_Cache,time()+20);
-		$eqLogic_myfoxv2->save(true);
+		$eqLogic_Alarmemyfox->setCache($request_Cache,$json_result);
+		$eqLogic_Alarmemyfox->setCache('expiry'.$request_Cache,time()+20);
+		$eqLogic_Alarmemyfox->save(true);
 	
 		}
 	
@@ -1113,7 +1113,7 @@ class myfoxv2Cmd extends cmd {
 					$return = $return. ' le ' .date('d-m-Y \à H:i:s', strtotime($json_result["payload"]["items"][0]["createdAt"]));
 					 //Indique un message dans le message center
 					 if ($return != $this->execCmd($return,1) && $return !='Aucun') {
-					 log::add('myfoxv2', 'info', 'Myfox : '.$return);
+					 log::add('Alarmemyfox', 'info', 'Myfox : '.$return);
 					 }
 				
 				} 
@@ -1148,15 +1148,12 @@ class myfoxv2Cmd extends cmd {
 		//CHANGER ETAT DE LALARME
 			     $api_url = MYFOXURL . str_replace($pattern, $siteid, $request) ."?access_token=" . $token;
 				
-				log::add('myfoxv2', 'debug', 'action performed : '. $api_url);
+				log::add('Alarmemyfox', 'debug', 'action performed : '. $api_url);
                 $curl3 = curl_init( $api_url );
                 curl_setopt( $curl3, CURLOPT_POST, true );
                 curl_setopt( $curl3, CURLOPT_RETURNTRANSFER, 1);
                 $return = curl_exec( $curl3 );
-				$pull = myfoxv2::pull();
-				
-		
-					
+				$pull = Alarmemyfox::pull();					
 	}
 
 	}	
