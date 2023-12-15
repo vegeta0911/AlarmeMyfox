@@ -18,7 +18,7 @@
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 include_file('core', 'authentification', 'php');
 if (!isConnect()) {
-    include_file('desktop', 'myfoxv2', '404', 'php');
+    include_file('desktop', 'Alarmemyfox', '404', 'php');
     die();
 }
 ?>
