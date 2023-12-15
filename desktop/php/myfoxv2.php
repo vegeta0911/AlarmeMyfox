@@ -2,8 +2,8 @@
 if (!isConnect('admin')) {
     throw new Exception('{{401 - Accès non autorisé}}');
 }
-sendVarToJS('eqType', 'myfoxv2');
-$eqLogics = eqLogic::byType('myfoxv2')
+sendVarToJS('eqType', 'Alarmemyfox');
+$eqLogics = eqLogic::byType('Alarmemyfox')
 ?>
 
 <div class="row row-overflow">
@@ -36,7 +36,7 @@ foreach ($eqLogics as $eqLogic) {
  foreach ($eqLogics as $eqLogic) {
                     echo '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' . $eqLogic->getId() . '" style="background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >';
                     echo "<center>";
-                    echo '<img src="plugins/myfoxv2/plugin_info/myfoxv2_icon.png" height="105"  />';
+                    echo '<img src="plugins/Alarmemyfox/plugin_info/Alarmemyfox_icon.png" height="105"  />';
                     echo "</center>";
                     echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>' . $eqLogic->getHumanName(true, true) . '</center></span>';
                     echo '</div>';
@@ -97,28 +97,28 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
                 <div class="form-group">
                     <label class="col-md-2 control-label">{{Client Id}}</label>
                     <div class="col-md-3">
-                        <input type="text" class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="myfoxv2ClientId" placeholder="myfoxv2ClientId"/>
+                        <input type="text" class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="AlarmemyfoxClientId" placeholder="AlarmemyfoxClientId"/>
 						{{Exemple}}: fdc0ab034bde5465af4192937a07a43e
                     </div>
                 </div>
 		<div class="form-group">
                     <label class="col-md-2 control-label">{{Client Secret}}</label>
                     <div class="col-md-3">
-                        <input type="text" class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="myfoxv2ClientSecret" placeholder="myfoxv2ClientSecret"/>
+                        <input type="text" class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="AlarmemyfoxClientSecret" placeholder="AlarmemyfoxClientSecret"/>
 						{{Exemple}}: S2M3Be1iuBKFQlEg8Dz9Tq1bW8sbkFRf
                     </div>
                 </div>
 		<div class="form-group">
                     <label class="col-md-2 control-label">{{Username}}</label>
                     <div class="col-md-3">
-                        <input type="text" class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="myfoxv2Username" placeholder="myfoxv2Username"/>
+                        <input type="text" class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="AlarmemyfoxUsername" placeholder="AlarmemyfoxUsername"/>
 						{{Exemple}}: monadressemail@exemple.fr
                     </div>
                 </div>
                <div class="form-group">
                     <label class="col-md-2 control-label">{{Password}}</label>
                     <div class="col-md-3">
-                        <input type="password" class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="myfoxv2Password" placeholder="myfoxv2Password"/>
+                        <input type="password" class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="AlarmemyfoxPassword" placeholder="AlarmemyfoxPassword"/>
 						{{Exemple}}: s3cr3tPassw0rd
                     </div>
                 </div>		
@@ -155,5 +155,5 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
 </div>
 </div>
 
-<?php include_file('desktop','myfoxv2','js','myfoxv2'); ?>
+<?php include_file('desktop','Alarmemyfox','js','Alarmemyfox'); ?>
 <?php include_file('core','plugin.template','js'); ?>
