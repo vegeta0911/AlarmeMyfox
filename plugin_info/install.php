@@ -19,44 +19,44 @@
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 
-function myfoxv2_install() {
-	 $cron = cron::byClassAndFunction('myfoxv2', 'maj');
+function Alarmemyfox_install() {
+	 $cron = cron::byClassAndFunction('Alarmemyfox', 'maj');
   if (is_object($cron)) {
       $cron->remove();
   }
 }
 
-function myfoxv2_update() {
-	 $cron = cron::byClassAndFunction('myfoxv2', 'maj');
+function Alarmemyfox_update() {
+	 $cron = cron::byClassAndFunction('Alarmemyfox', 'maj');
   if (is_object($cron)) {
       $cron->remove();
 	   
   }
-    $cronP = cron::byClassAndFunction('myfoxv2', 'pull');
+    $cronP = cron::byClassAndFunction('Alarmemyfox', 'pull');
 	  if (!is_object($cronP)) {
 				$cronP = new cron();
-				$cronP->setClass('myfoxv2');
+				$cronP->setClass('Alarmemyfox');
 				$cronP->setFunction('pull');
-				$cronP->setOption(array('myfoxv2_id' => intval($this->getId())));
+				$cronP->setOption(array('Alarmemyfox_id' => intval($this->getId())));
 				$cronP->setLastRun(date('Y-m-d H:i:s'));
 				$cronP->setEnable(1);
 				$cronP->setDeamon(1);
 				$cronP->setTimeout('30');
 				$cronP->setSchedule('* * * * *');
 				$cronP->save();
-				log::add('myfoxv2', 'debug', 'addCron');
+				log::add('Alarmemyfox', 'debug', 'addCron');
 		  
 		  
 	  }
 }
 
-function myfoxv2_remove() {
+function Alarmemyfox_remove() {
 	
-    $cron = cron::byClassAndFunction('myfoxv2', 'maj');
+    $cron = cron::byClassAndFunction('Alarmemyfox', 'maj');
     if (is_object($cron)) {
         $cron->remove();
     }
-	 $cron = cron::byClassAndFunction('myfoxv2', 'pull');
+	 $cron = cron::byClassAndFunction('Alarmemyfox', 'pull');
     if (is_object($cron)) {
         $cron->remove();
     }
