@@ -46,3 +46,6 @@ Le plugin permet :
 - L'activation partiele ou totale, de desarmer l'alarme
 - L'activation ou desactivation d'un equipement (module, prise, lumiere, garage, portail)
 - L'activation de scenario enregistrés chez myfox
+
+Avenir:
+je suis en train de voir pour mettre en place le flux vidéo mais sans caméra je pourrais pas aller plus  loin.
