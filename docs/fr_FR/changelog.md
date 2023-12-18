@@ -1,2 +1,4 @@
-Le plugin est complet, il ne necessite pas de mise à jour actuellement, ou les mises à jours sont uniquement pour la sécurité.
+- j'ai rajouté des evenements supplémentaire, puis maintenant compatible jeedom v4.
+- Dernier evenement de type "alarm","security","scenario","account","access","config","diagnosis","homeAuto","dernier event".
+- reste à faire ajout de camera myfox mais malheureusement je n'ai pas la camera adéquat
 ===
