@@ -1,5 +1,5 @@
-
 Mise à jour le 19/12/2023:
+===
 j'ai rajouté des evenements supplémentaire, puis maintenant compatible jeedom v4.
 Dernier evenement de type
  "alarm","security","scenario","account","access","config","diagnosis","homeAuto","dernier event". 
