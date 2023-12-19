@@ -10,8 +10,8 @@
     "hasOwnDeamon": true,
     "hasDependency" : false,
     "maxDependancyInstallTime" : 0,
-    "changelog" : "https://gui59169.github.io/myfoxv2/fr_FR/changelog",
-    "documentation" : "https://gui59169.github.io/myfoxv2/fr_FR/",
+    "changelog" : "https://vegeta0911.github.io/AlarmeMyfox/fr_FR/changelog",
+    "documentation" : "https://vegeta0911.github.io/AlarmeMyfox/fr_FR/changelog/",
     "language" : ["fr_FR"],
     "compatibility" : ["miniplus","smart","rpi","docker","diy","mobile","luna"]
 }
