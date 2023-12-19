@@ -39,7 +39,7 @@ Le plugin récupere toutes les minutes :
 
 
 - Dernier evenement de type "alarm","security","scenario","account","access","config","diagnosis","homeAuto","dernier event"( intrusion, defaut centrale, defaut pile, etc... ) sous la forme : "Alarme « Intrusion » déclenchée par l'appareil « ENTREE » (Sensibilité: 5). le xxxx à xxx."
-	* S'il n'y a pas d'evenement dans la journée, la commande retourne : Aucun *
+	* S'il n'y a pas d'evenement dans la journée, la commande retourne : Aucun 
 
 Le plugin permet : 
 
