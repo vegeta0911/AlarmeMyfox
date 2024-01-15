@@ -1146,22 +1146,18 @@ class AlarmemyfoxCmd extends cmd {
 				}   else if($this->getType() == 'action') {
 		///////////////ACTION A FAIRE EN FONCTION du getType() (demande d'action)
 		//CHANGER ETAT DE LALARME
-			     $api_url = MYFOXURL . str_replace($pattern, $siteid, $request) ."?access_token=" . $token;
+		$api_url = MYFOXURL . str_replace($pattern, $siteid, $request) ."?access_token=" . $token;
 				
-				log::add('Alarmemyfox', 'debug', 'action performed : '. $api_url);
+		log::add('Alarmemyfox', 'debug', 'action performed : '. $api_url);
                 $curl3 = curl_init( $api_url );
-                curl_setopt($curl3, CURLOPT_POST, true );
+                curl_setopt($curl3, CURLOPT_POST, false );
                 curl_setopt($curl3, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($curl3, CURLOPT_POSTFIELDS, $api_url);
                 $return = curl_exec( $curl3 );
-				$pull = Alarmemyfox::pull();					
-	}
-
-	}	
-}
-	}
-
-
-}
+		$pull = Alarmemyfox::pull();					
+	        }
+              }	
+            }
+	  }
+        }
 
 ?>
