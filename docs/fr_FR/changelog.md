@@ -1,6 +1,6 @@
 Mise à jour le 15/01/2024:
 ===
-correction de bug pour le passage a la version jeddom 4.4.
+correction de bug pour le passage a la version jeedom 4.4.
 
 Mise à jour le 19/12/2023:
 ===
