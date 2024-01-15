@@ -1,3 +1,7 @@
+Mise à jour le 15/01/2024:
+===
+correction de bug pour le passage a la version jeddom 4.4.
+
 Mise à jour le 19/12/2023:
 ===
 - j'ai rajouté des evenements supplémentaire, puis maintenant compatible jeedom v4.
