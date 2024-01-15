@@ -954,7 +954,7 @@ class AlarmemyfoxCmd extends cmd {
 					return 'Desarmé';
 					}
 	}
-    
+    // l'$_etat1 est utiliser pour homebrigde renvoi en binaire
     public function converbinary($_etat1) {
 	
 		switch ($_etat1) {
