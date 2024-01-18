@@ -827,7 +827,7 @@ class Alarmemyfox extends eqLogic {
 		$aTotal->setConfiguration('request', '/site/#siteId#/security/set/armed');
 		$aTotal->setType('action');
 		$aTotal->setSubType('other');
-		$aTotal->setDisplay('icon','<i class="icon jeedom-lock-ferme"></i>');
+		$aTotal->setDisplay('icon','<i style="color:red" class="icon jeedomapp-lock-ferme"></i>');
 		$aTotal->setDisplay('generic_type','ALARM_SET_MODE');
 		$aTotal->setEqLogic_id($this->getId());
 		$aTotal->save();
@@ -842,7 +842,7 @@ class Alarmemyfox extends eqLogic {
 		$aPartiel->setConfiguration('request', '/site/#siteId#/security/set/partial');
 		$aPartiel->setType('action');
 		$aPartiel->setSubType('other');
-		$aPartiel->setDisplay('icon','<i class="icon securite-key1"></i>');
+		$aPartiel->setDisplay('icon','<i style="color:orange" class="icon jeedomapp-lock-partiel"></i>');
 		$aPartiel->setDisplay('generic_type','ALARM_SET_MODE');
 		$aPartiel->setEqLogic_id($this->getId());
 		$aPartiel->save();
@@ -857,7 +857,7 @@ class Alarmemyfox extends eqLogic {
 		$aDesarme->setConfiguration('request', '/site/#siteId#/security/set/disarmed');
 		$aDesarme->setType('action');
 		$aDesarme->setSubType('other');
-		$aDesarme->setDisplay('icon','<i class="icon jeedom-lock-ouvert"></i>');
+		$aDesarme->setDisplay('icon','<i style="color:green" class="icon jeedomapp-lock-ouvert"></i>');
 		$aDesarme->setDisplay('generic_type','ALARM_RELEASED');
 		$aDesarme->setEqLogic_id($this->getId());
 		$aDesarme->save();
@@ -947,11 +947,11 @@ class AlarmemyfoxCmd extends cmd {
 	
 		switch ($_etat) {
 				case 'armed':
-					return 'Armement Total';
+					return '<i style="color:red; font-size: 30px;" class="icon jeedomapp-lock-ferme"></i>';
 				case 'partial':
-					return 'Armement Partiel';
+					return '<i style="color:orange; font-size: 30px;" class="icon jeedomapp-lock-partiel"></i>';
 				case 'disarmed':
-					return 'Desarmé';
+					return '<i style="color:green; font-size: 30px;" class="icon jeedomapp-lock-ouvert"></i>';
 					}
 	}
     
