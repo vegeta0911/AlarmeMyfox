@@ -625,7 +625,7 @@ class Alarmemyfox extends eqLogic {
 		if (!is_object($state1)) {
 			$state1 = new AlarmemyfoxCmd();
 			$state1->setLogicalId('etat1');
-			$state1->setIsVisible(1);
+			$state1->setIsVisible(0);
 			$state1->setName(__('Etat1', __FILE__));
 		}
 		$state1->setConfiguration('request', '/site/#siteId#/security');
@@ -637,8 +637,8 @@ class Alarmemyfox extends eqLogic {
 		$state1->setSubType('binary');
 		$state1->setIsHistorized(1);
 		$state1->setDisplay('generic_type','ALARM_MODE');
-	   // $state1->setTemplate('dashboard','tile');
-		$state1->setTemplate('mobile','tile');
+	        $state1->setTemplate('dashboard','defaut');
+		$state1->setTemplate('mobile','defaut');
 		$state1->setEqLogic_id($this->getId());
 		$state1->save();
 		
@@ -657,8 +657,8 @@ class Alarmemyfox extends eqLogic {
 		$state->setSubType('string');
 		$state->setIsHistorized(1);
 		$state->setDisplay('generic_type','ALARM_MODE');
-	//	$state->setTemplate('dashboard','tile');
-		$state->setTemplate('mobile','tile');
+	        $state->setTemplate('dashboard','defaut');
+		$state->setTemplate('mobile','defaut');
 		$state->setEqLogic_id($this->getId());
 		$state->save();
 		
