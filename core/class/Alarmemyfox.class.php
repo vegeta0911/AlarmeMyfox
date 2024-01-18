@@ -637,8 +637,8 @@ class Alarmemyfox extends eqLogic {
 		$state1->setSubType('binary');
 		$state1->setIsHistorized(1);
 		$state1->setDisplay('generic_type','ALARM_MODE');
-	        $state1->setTemplate('dashboard','defaut');
-		$state1->setTemplate('mobile','defaut');
+	    //$state1->setTemplate('dashboard','tile');
+		$state1->setTemplate('mobile','tile');
 		$state1->setEqLogic_id($this->getId());
 		$state1->save();
 		
@@ -657,7 +657,7 @@ class Alarmemyfox extends eqLogic {
 		$state->setSubType('string');
 		$state->setIsHistorized(1);
 		$state->setDisplay('generic_type','ALARM_MODE');
-	        $state->setTemplate('dashboard','defaut');
+		$state->setTemplate('dashboard','defaut');
 		$state->setTemplate('mobile','defaut');
 		$state->setEqLogic_id($this->getId());
 		$state->save();
@@ -827,7 +827,7 @@ class Alarmemyfox extends eqLogic {
 		$aTotal->setConfiguration('request', '/site/#siteId#/security/set/armed');
 		$aTotal->setType('action');
 		$aTotal->setSubType('other');
-		$aTotal->setDisplay('icon','<i style="color:red" class="icon jeedomapp-lock-ferme"></i>');
+		$aTotal->setDisplay('icon','<i style="color:red;" class="icon jeedomapp-lock-ferme"></i>');
 		$aTotal->setDisplay('generic_type','ALARM_SET_MODE');
 		$aTotal->setEqLogic_id($this->getId());
 		$aTotal->save();
@@ -842,7 +842,7 @@ class Alarmemyfox extends eqLogic {
 		$aPartiel->setConfiguration('request', '/site/#siteId#/security/set/partial');
 		$aPartiel->setType('action');
 		$aPartiel->setSubType('other');
-		$aPartiel->setDisplay('icon','<i style="color:orange" class="icon jeedomapp-lock-partiel"></i>');
+		$aPartiel->setDisplay('icon','<i style="color:orange;" class="icon jeedomapp-lock-partiel"></i>');
 		$aPartiel->setDisplay('generic_type','ALARM_SET_MODE');
 		$aPartiel->setEqLogic_id($this->getId());
 		$aPartiel->save();
@@ -857,7 +857,7 @@ class Alarmemyfox extends eqLogic {
 		$aDesarme->setConfiguration('request', '/site/#siteId#/security/set/disarmed');
 		$aDesarme->setType('action');
 		$aDesarme->setSubType('other');
-		$aDesarme->setDisplay('icon','<i style="color:green" class="icon jeedomapp-lock-ouvert"></i>');
+		$aDesarme->setDisplay('icon','<i style="color:green;" class="icon jeedomapp-lock-ouvert"></i>');
 		$aDesarme->setDisplay('generic_type','ALARM_RELEASED');
 		$aDesarme->setEqLogic_id($this->getId());
 		$aDesarme->save();
@@ -954,7 +954,7 @@ class AlarmemyfoxCmd extends cmd {
 					return '<i style="color:green; font-size: 30px;" class="icon jeedomapp-lock-ouvert"></i>';
 					}
 	}
-    
+    // l'$_etat1 est utiliser pour homebrigde renvoi en binaire
     public function converbinary($_etat1) {
 	
 		switch ($_etat1) {
