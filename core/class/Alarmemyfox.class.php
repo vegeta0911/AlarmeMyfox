@@ -947,11 +947,11 @@ class AlarmemyfoxCmd extends cmd {
 	
 		switch ($_etat) {
 				case 'armed':
-					return '<i style="color:red; font-size: 30px;" class="icon jeedomapp-lock-ferme"></i>';
+					return '<i style="color:var(--al-danger-color) !important; font-size: 30px;" class="icon jeedomapp-lock-ferme"></i>';
 				case 'partial':
-					return '<i style="color:orange; font-size: 30px;" class="icon jeedomapp-lock-partiel"></i>';
+					return '<i style="color:var(--al-warning-color) !important; font-size: 30px;" class="icon jeedomapp-lock-partiel"></i>';
 				case 'disarmed':
-					return '<i style="color:green; font-size: 30px;" class="icon jeedomapp-lock-ouvert"></i>';
+					return '<i style="color:var(--al-success-color) !important; font-size: 30px;" class="icon jeedomapp-lock-ouvert"></i>';
 					}
 	}
     // l'$_etat1 est utiliser pour homebrigde renvoi en binaire
