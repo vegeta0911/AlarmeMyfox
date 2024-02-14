@@ -52,7 +52,7 @@ class Alarmemyfox extends eqLogic {
 				$cronP = new cron();
 				$cronP->setClass('Alarmemyfox');
 				$cronP->setFunction('pull');
-				$cronP->setOption(array('Alarmemyfox_id' => intval("Alarmemyfoxid->getId())));
+				$cronP->setOption(array('Alarmemyfox_id' => intval('Alarmemyfoxid'->getId())));
 				$cronP->setLastRun(date('Y-m-d H:i:s'));
 				$cronP->setEnable(1);
 				$cronP->setDeamon(1);
