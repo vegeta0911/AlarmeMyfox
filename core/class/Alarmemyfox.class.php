@@ -620,6 +620,26 @@ class Alarmemyfox extends eqLogic {
 		}
 		}
 		
+        $state2 = $this->getCmd(null, 'etat2');
+		if (!is_object($state2)) {
+			$state2 = new AlarmemyfoxCmd();
+			$state2->setLogicalId('etat2');
+			$state2->setIsVisible(0);
+			$state2->setName(__('Etat2', __FILE__));
+		}
+		$state2->setConfiguration('request', '/site/#siteId#/security');
+		$state2->setConfiguration('response', 'statusLabel');
+		$state2->setConfiguration('onlyChangeEvent',1);
+		$state2->setType('info');
+		$state2->setSubType('string');
+		$state2->setIsHistorized(1);
+		$state2->setDisplay('generic_type','ALARM_MODE');
+	    $state2->setTemplate('dashboard','defaut');
+		$state2->setTemplate('mobile','defaut');
+		$state2->setEqLogic_id($this->getId());
+		$state2->save();
+      
+      
         $state1 = $this->getCmd(null, 'etat1');
 		if (!is_object($state1)) {
 			$state1 = new AlarmemyfoxCmd();
@@ -856,7 +876,7 @@ class Alarmemyfox extends eqLogic {
 		$aDesarme->setConfiguration('request', '/site/#siteId#/security/set/disarmed');
 		$aDesarme->setType('action');
 		$aDesarme->setSubType('other');
-		$aDesarme->setDisplay('icon','<i style="color:green;" class="icon jeedomapp-lock-ouvert"></i>');
+		$aDesarme->setDisplay('icon','<i style="color:rgb(47,236,66);" class="icon jeedomapp-lock-ouvert"></i>');
 		$aDesarme->setDisplay('generic_type','ALARM_RELEASED');
 		$aDesarme->setEqLogic_id($this->getId());
 		$aDesarme->save();
@@ -942,7 +962,7 @@ class AlarmemyfoxCmd extends cmd {
     /*     * *********************Methode d'instance************************* */
 	
 	//convertir anglais vers FR
-	public function convertLang($_etat) {
+	public function convertLogo($_etat) {
 	
 		switch ($_etat) {
 				case 'armed':
@@ -965,7 +985,18 @@ class AlarmemyfoxCmd extends cmd {
 					return '0';
 					}
 	}
-
+    
+    public function convertLang($_etat2) {
+	
+		switch ($_etat2) {
+				case 'armed':
+					return 'Armement Total';
+				case 'partial':
+					return 'Armement Partiel';
+				case 'disarmed':
+					return 'Desarmé';
+					}
+	}
 
 
     public function preSave() {
@@ -1126,10 +1157,10 @@ class AlarmemyfoxCmd extends cmd {
 			}
 			
 			/////////ETAT
-			if($this->getLogicalId()=='etat') $return = self::convertLang($json_result["payload"]["statusLabel"]);
+			if($this->getLogicalId()=='etat') $return = self::convertLogo($json_result["payload"]["statusLabel"]);
             if($this->getLogicalId()=='etat1') $return = self::converbinary($json_result["payload"]["status"]);
-          
-			if (($return != $this->execCmd($return,2)) && $return !=='' && $return !=='Aucun') {
+            if($this->getLogicalId()=='etat2') $return = self::convertLang($json_result["payload"]["statusLabel"]);
+			if (($return != $this->execCmd($return,3)) && $return !=='' && $return !=='Aucun') {
 				
 				$this->setCollectDate(date('Y-m-d H:i:s'));
 				
