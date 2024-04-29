@@ -1,9 +1,9 @@
 Mise à jour le 29/04/2024:
 ===
  Ajout de trois états:
- 1) état = icone état
- 2) état1 = binaire état
- 3) état2 = état par text
+ - état = icone état
+ - état1 = binaire état
+ - état2 = état par text
     
 Mise à jour le 18/01/2024:
 ===
