@@ -1179,11 +1179,12 @@ class AlarmemyfoxCmd extends cmd {
 		$api_url = MYFOXURL . str_replace($pattern, $siteid, $request) ."?access_token=" . $token;
 				
 		log::add('Alarmemyfox', 'debug', 'action performed : '. $api_url);
-                $curl3 = curl_init( $api_url );
+                $curl3 = curl_init();
+                curl_setopt($curl3, CURLOPT_URL, $api_url);
                 curl_setopt($curl3, CURLOPT_POST, true );
-                curl_setopt($curl3, CURLOPT_RETURNTRANSFER, 1);
-                $return = curl_exec( $curl3 );
-		$pull = Alarmemyfox::pull();					
+                curl_setopt($curl3, CURLOPT_RETURNTRANSFER, true);
+                curl_exec( $curl3 );
+		Alarmemyfox::pull();					
 	        }
               }	
             }
