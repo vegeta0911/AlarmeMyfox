@@ -1181,7 +1181,7 @@ class AlarmemyfoxCmd extends cmd {
 		log::add('Alarmemyfox', 'debug', 'action performed : '. $api_url);
                 $curl3 = curl_init();
                 curl_setopt($curl3, CURLOPT_URL, $api_url);
-                curl_setopt($curl3, CURLOPT_POST, true );
+                curl_setopt($curl3, CURLOPT_POST, false );
                 curl_setopt($curl3, CURLOPT_RETURNTRANSFER, true);
                 curl_exec( $curl3 );
 		Alarmemyfox::pull();					
