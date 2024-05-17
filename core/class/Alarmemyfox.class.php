@@ -107,10 +107,11 @@ class Alarmemyfox extends eqLogic {
                 }		
 		}		
       }
+	sleep(30);
 	  }
       else{
         if($deamon_info['state'] != 'ok'){
-        is_object('Alarmemyfox')->deamon_start();
+        self::deamon_start();
         }
       }
     }
