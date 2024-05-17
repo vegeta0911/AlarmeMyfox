@@ -107,7 +107,7 @@ class Alarmemyfox extends eqLogic {
                 }		
 		}		
       }
-	sleep(30);
+	sleep(5);
 	  }
       else{
         if($deamon_info['state'] != 'ok'){
