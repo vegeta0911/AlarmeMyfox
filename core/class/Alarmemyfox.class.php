@@ -107,7 +107,10 @@ class Alarmemyfox extends eqLogic {
                 }		
 		}		
       }
-	sleep(5);
+   if($eqLogic->getconfiguration(cpu_tmp) == 1){
+	sleep($eqLogic->getconfiguration(cpu_temps));
+        log::add('Alarmemyfox', 'debug', 'Retour Evenement info : ' .print_r(($eqLogic->getconfiguration(cpu_temps)),true). 's');
+    }
 	  }
       else{
         if($deamon_info['state'] != 'ok'){
