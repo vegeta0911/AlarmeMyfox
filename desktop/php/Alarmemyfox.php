@@ -125,8 +125,8 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
 				
             </fieldset> 
 <div class="form-group">
-	<label class="col-sm-2 control-label">{{Diminution de la charge cpu}}
-		<sup><i class="fa fa-question-circle tooltips" title="{{plus vous augmentez le temps plus vous retardez les événements des infos}}"></i></sup>
+	<label class="col-sm-2 control-label">{{Délai entre chaque récupération des informations}}
+		<sup><i class="fa fa-question-circle tooltips" title="{{Permet de réduire la charge CPU dans certains cas}}"></i></sup>
 	</label>
 	<div class="col-sm-1">
 		<input type="checkbox" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="{{cpu_tmp}}">
