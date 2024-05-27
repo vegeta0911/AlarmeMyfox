@@ -21,6 +21,17 @@
     });
 });
 
+$('.eqLogicAttr[data-l1key=configuration][data-l2key=cpu_tmp]').on('change',function(){
+  cpu = $(this).value();
+  //alert(cpu);
+    if (cpu == true) {
+       $('.eqLogicAttr[data-l1key=configuration][data-l2key=cpu_temps]').show();
+    }
+    else
+    {
+     $('.eqLogicAttr[data-l1key=configuration][data-l2key=cpu_temps]').hide();
+    }
+});
 
 $(function() {
     $("#table_cmd tbody").delegate(".listCmdAlarmemyfox", 'click', function(event) {
