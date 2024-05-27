@@ -132,6 +132,16 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
 		<input type="checkbox" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="{{cpu_tmp}}">
 
     </div>
+    <div class="col-sm-1 col-lg-2">
+  <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="{{cpu_temps}}">
+     <option value="0">{{Aucun}}</option>
+     <option value="5">{{5}}</option>
+     <option value="10">{{10}}</option>
+     <option value="15">{{15}}</option>
+     <option value="20">{{20}}</option>
+  </select>
+</div>
+</div>
  </form>
 
 <legend>{{Commandes}}</legend>
