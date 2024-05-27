@@ -1,3 +1,7 @@
+Mise à jour le 27/05/2024:
+===
+mise en place d'une option pour aider le cpu (charge cpu), merci à oozaer pour sa proposition est son aide.
+
 Mise à jour le 29/04/2024:
 ===
  Ajout de trois états:
