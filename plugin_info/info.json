@@ -5,6 +5,10 @@
     "licence": "AGPL",
     "author": "vegeta",
     "require": "4.0",
+    "os" : {
+	    "min" : 10,
+	    "max" : 12
+     },
     "version": "2.1.6",
     "category": "security",
     "hasOwnDeamon": true,
@@ -24,9 +28,5 @@
         "luna",        
         "v4",         
         "Atlas"
-     ],
-     "os": [
-	"min" : 11,
-	"max" : 12
      ]
 }
