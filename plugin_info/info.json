@@ -7,7 +7,7 @@
     "require": "4.4",
     "pluginVersion": "2.2",
     "os" : {
-		"min" : 10,
+		"min" : 11,
 		"max" : 12
     },
     "category": "security",
