@@ -1,3 +1,7 @@
+mise à jour le 20/09/2024
+===
+bug fix sur le daemon suite a la fonction charge cpu.
+
 Mise à jour le 27/05/2024:
 ===
 mise en place d'une option pour aider le cpu (charge cpu), merci à oozaer pour sa proposition est son aide.
