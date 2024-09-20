@@ -107,9 +107,11 @@ class Alarmemyfox extends eqLogic {
                 }		
 		}		
       }
-	 if($eqLogic->getconfiguration(cpu_tmp) == 1){
-	sleep($eqLogic->getconfiguration(cpu_temps));
-        log::add('Alarmemyfox', 'debug', 'Retour Evenement info : ' .print_r(($eqLogic->getconfiguration(cpu_temps)),true). 's');
+	  $tmp = $eqLogic->getconfiguration();
+        //log::add('Alarmemyfox','debug','essai '.print_r($tmp['cpu_tmp'],true));
+	 if($tmp['cpu_tmp'] == 1){
+	sleep($tmp['cpu_temps']);
+        log::add('Alarmemyfox', 'debug', 'Retour Evenement info : ' .print_r($tmp['cpu_temps'],true). 's');
     }
 	  }
       else{
