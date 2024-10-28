@@ -114,11 +114,11 @@ class Alarmemyfox extends eqLogic {
         log::add('Alarmemyfox', 'debug', 'Retour Evenement info : ' .print_r($tmp['cpu_temps'],true). 's');
     }
 	  }
-      else{
+   /*   else{
         if($deamon_info['state'] != 'ok'){
         is_object('Alarmemyfox')->deamon_start();
         }
-      }
+      }*/
     }
 
 
