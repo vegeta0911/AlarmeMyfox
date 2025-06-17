@@ -6,16 +6,15 @@
     "author": "vegeta",
     "require": "4.0",
     "os" : {
-	    "min" : 10,
-	    "max" : 12
+	    "min" : 11
      },
     "pluginVersion": "2.1.6",
     "category": "security",
     "hasOwnDeamon": true,
     "hasDependency" : false,
     "maxDependancyInstallTime" : 0,
-    "changelog" : "https://vegeta0911.github.io/AlarmeMyfox/fr_FR/changelog",
-    "documentation" : "https://vegeta0911.github.io/AlarmeMyfox/fr_FR/",
+    "changelog" : "https://vegeta0911.github.io/documentation/plugins/fr_FR/AlarmeMyfox/changelog",
+    "documentation" : "https://vegeta0911.github.io/documentation/plugins/fr_FR/AlarmeMyfox/",
     "language": [
 		"fr_FR"
 	],
