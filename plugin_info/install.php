@@ -51,7 +51,15 @@ function Alarmemyfox_update() {
 }
 
 function Alarmemyfox_remove() {
-	
+
+	// arrete proprement le processus myfox_local_server.py (sauvegarde sa base avant de quitter) pour ne
+	// pas le laisser tourner orphelin apres la desinstallation du plugin.
+	try {
+		Alarmemyfox::deamon_stop();
+	} catch (Exception $e) {
+		log::add('Alarmemyfox', 'debug', 'deamon_stop a la desinstallation : ' . $e->getMessage());
+	}
+
     $cron = cron::byClassAndFunction('Alarmemyfox', 'maj');
     if (is_object($cron)) {
         $cron->remove();
@@ -60,6 +68,5 @@ function Alarmemyfox_remove() {
     if (is_object($cron)) {
         $cron->remove();
     }
-}
 }
 ?>
