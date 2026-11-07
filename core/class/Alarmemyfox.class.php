@@ -108,11 +108,10 @@ class Alarmemyfox extends eqLogic {
         $cmd = 'cd ' . escapeshellarg($parent_path) . ' && ' . self::PYTHON_PATH . ' resources/myfox_local_server.py';
 		$cmd .= ' --web-port ' . config::byKey('webPort', __CLASS__, '8081');
 		$cmd .= ' --backup-dir ' . __DIR__ . '/../../data ';
-      	#$cmd .= ' --allow-host myfox.steff80.fr ';
 		$cmd .= ' --data-dir ' . __DIR__ . '/../../data ';
 		$cmd .= ' --log ' . __DIR__ . '/../../data/myfox_server.log ';
         $cmd .= ' --loglevel ' . log::convertLogLevel($daemonLog);
-        $cmd .= ' --socketport ' . config::byKey('socketport', __CLASS__, '58000');
+        $cmd .= ' --socketport ' . config::byKey('socketport', __CLASS__, '8081');
         $cmd .= ' --apikey ' . jeedom::getApiKey(__CLASS__);
         $cmd .= ' --callback ' . network::getNetworkAccess('internal') .'/plugins/Alarmemyfox/core/php/jeeAlarmemyfox.php';
         $cmd .= ' --pid ' . jeedom::getTmpFolder(__CLASS__) . '/myfox_local_server.pid';
@@ -148,10 +147,7 @@ class Alarmemyfox extends eqLogic {
 		if (self::guardEnabled()) {
 			self::guardEnsureRunning();
 		}
-		// Cree/retablit automatiquement les commandes natives et les commandes dynamiques du tableau
-		// "Equipements" (voir syncCommands() plus bas) sur chaque equipement du plugin, sans manipulation
-		// manuelle en "mode avance". Idempotent (verifie l'existant par logicalId avant de creer) : sans
-		// effet si elles existent deja.
+
 		self::syncAllCommands();
 		return true;
     }
@@ -245,20 +241,13 @@ class Alarmemyfox extends eqLogic {
 		return config::byKey('restApiKey', __CLASS__, '');
 	}
 
-	public static function restApiBase() {
-		// Toujours en local (127.0.0.1) : le tableau de bord HTTP (--web-port) tourne sur ce meme boitier
-		// Jeedom, ce n'est PAS le port de la centrale (8888/garde) qui lui peut etre sur un autre reseau.
-		return network::getNetworkAccess('internal') .':' . intval(config::byKey('webPort', __CLASS__, '8081'));
-	}
-
-	/* Miroir de _is_disarm_order() cote Python (myfox_local_server.py) : vrai uniquement pour "100|1". */
 	public static function isDisarmOrder($order) {
 		$p = explode('|', (string) $order);
 		return isset($p[0]) && intval($p[0]) === 100 && isset($p[1]) && $p[1] !== '' && hexdec($p[1]) === 1;
 	}
 
 	public static function restApiCall($method, $path, $body = null) {
-		$ch = curl_init(self::restApiBase() . $path);
+		$ch = curl_init(network::getNetworkAccess('internal') .':' . intval(config::byKey('webPort', __CLASS__, '8081')) . $path);
 		$headers = array('Content-Type: application/json');
 		$key = self::restApiKey();
 		if ($key !== '') {
@@ -333,21 +322,6 @@ class Alarmemyfox extends eqLogic {
 		}
 	}
 
-	/* ---------------------------------------------------------------------
-	 * COMMANDES DYNAMIQUES DU TABLEAU "ÉQUIPEMENTS" (prises, modules, volets roulants) -- demande
-	 * explicite de l'utilisateur le 6 novembre : une commande Jeedom par appareil REELLEMENT connu du
-	 * demon (/api/state), pas une liste figee -- un appareil supprime cote centrale/tableau de bord voit
-	 * sa commande retiree au prochain sync, un appareil nouvellement appaire voit la sienne apparaitre de
-	 * la meme facon (postSave() et deamon_start()/syncAllCommands() ci-dessus appellent deja syncCommands()
-	 * automatiquement ; un redemarrage du demon ou un enregistrement de l'equipement suffit donc a repercuter
-	 * un changement cote centrale, sans toucher au code).
-	 * --------------------------------------------------------------------- */
-
-	// Recupere le tableau "actuators" de /api/state (memes appareils, memes champs que le tableau
-	// "Equipements" du tableau de bord local -- voir out["actuators"] dans myfox_local_server.py). Renvoie
-	// null (et non un tableau vide) si l'API est injoignable ou refuse la cle : syncEquipmentCommands() ne
-	// doit alors RIEN modifier, pour ne pas effacer les commandes existantes a cause d'un demon simplement
-	// pas encore demarre.
 	public static function getEquipmentDevices() {
 		$resp = self::restApiCall('GET', '/api/state');
 		if (!is_array($resp) || !isset($resp['actuators']) || !is_array($resp['actuators'])) {
@@ -356,11 +330,6 @@ class Alarmemyfox extends eqLogic {
 		return $resp['actuators'];
 	}
 
-	// Devmod 115 = volet roulant, 112 = prise ; le reste (120 = module 1000 W, 114 = module 3500 W...) est
-	// traite comme un module ON/OFF simple -- meme logique que panel_group() cote Python
-	// (myfox_local_server.py). Le type choisi par l'utilisateur (colonne "Type" du tableau de bord, champ
-	// "ctype") prime sur le devmod, exactement comme cote tableau de bord (voir isShutter dans
-	// renderActuators()).
 	public static function isShutterDevice($dev) {
 		$ctype = isset($dev['ctype']) ? $dev['ctype'] : '';
 		if ($ctype === 'Volet roulant') {
@@ -426,9 +395,6 @@ class Alarmemyfox extends eqLogic {
 
 class AlarmemyfoxCmd extends cmd {
 
-	// Alias pratiques -> code d'ordre reel (voir ORDER_REFERENCE "100" dans myfox_local_server.py --reference).
-	// Si le logicalId d'une commande n'est pas dans ce tableau, il est utilise TEL QUEL comme ordre brut
-	// (permet de creer d'autres commandes "100|2", "621|...", etc. sans toucher au code).
 	const ORDER_ALIASES = array(
 		'arm_total'   => '100|4',
 		'arm_partial' => '100|2',
@@ -465,10 +431,6 @@ class AlarmemyfoxCmd extends cmd {
 			return;
 		}
 
-		// Commandes dynamiques du tableau "Equipements" (prises/modules/volets, voir
-		// Alarmemyfox::syncEquipmentCommands()) : logicalId "act_<id>_on/off/up/down/stop", ordre reel
-		// range dans la configuration de la commande (champ "equipmentOrder") plutot que dans
-		// ORDER_ALIASES, puisqu'il depend de l'appareil et change a chaque sync.
 		if (strpos($logicalId, 'act_') === 0) {
 			$this->executeEquipmentCommand($logicalId);
 			return;
@@ -477,9 +439,6 @@ class AlarmemyfoxCmd extends cmd {
 		$order = isset(self::ORDER_ALIASES[$logicalId]) ? self::ORDER_ALIASES[$logicalId] : $logicalId;
 		$body = array('order' => $order);
 		if (Alarmemyfox::isDisarmOrder($order)) {
-			// Confirmation obligatoire cote API (voir _is_disarm_order()/confirm dans myfox_local_server.py) --
-			// pas de mot de passe ici : disarm_needs_password() est ignore quand l'appel porte une cle API
-			// (voir "not self._apikey" cote serveur), et c'est justement le mode utilise par ce plugin.
 			$body['confirm'] = true;
 		}
 
@@ -490,13 +449,6 @@ class AlarmemyfoxCmd extends cmd {
 		}
 	}
 
-	/* "act_<id>_up"/"_down"/"_on"/"_off" portent un ordre brut ("400|<id>|2"/"400|<id>|0") dans leur
-	 * configuration "equipmentOrder" : envoi direct, comme les commandes natives. "act_<id>_stop" (volets
-	 * roulants uniquement) porte le marqueur "act_stop:<id>" : la centrale Myfox n'a pas d'ordre "arreter"
-	 * dedie -- renvoyer le DERNIER ordre Monter/Descendre arrete le volet en cours de mouvement (meme
-	 * principe que shutterStop() cote tableau de bord, voir myfox_local_server.py) ; on retient donc la
-	 * derniere direction envoyee pour chaque appareil dans le cache Jeedom (expire apres 24 h : au-dela,
-	 * un volet qui serait encore en train de bouger serait de toute facon anormal). */
 	private function executeEquipmentCommand($logicalId) {
 		$action = $this->getConfiguration('equipmentOrder');
 		if (strpos($action, 'act_stop:') === 0) {
