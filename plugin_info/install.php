@@ -20,34 +20,9 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 
 function Alarmemyfox_install() {
-	 $cron = cron::byClassAndFunction('Alarmemyfox', 'maj');
-  if (is_object($cron)) {
-      $cron->remove();
-  }
 }
 
 function Alarmemyfox_update() {
-	 $cron = cron::byClassAndFunction('Alarmemyfox', 'maj');
-  if (is_object($cron)) {
-      $cron->remove();
-	   
-  }
-    $cronP = cron::byClassAndFunction('Alarmemyfox', 'pull');
-	  if (!is_object($cronP)) {
-				$cronP = new cron();
-				$cronP->setClass('Alarmemyfox');
-				$cronP->setFunction('pull');
-				$cronP->setOption(array('Alarmemyfox_id' => intval($this->getId())));
-				$cronP->setLastRun(date('Y-m-d H:i:s'));
-				$cronP->setEnable(1);
-				$cronP->setDeamon(1);
-				$cronP->setTimeout('30');
-				$cronP->setSchedule('* * * * *');
-				$cronP->save();
-				log::add('Alarmemyfox', 'debug', 'addCron');
-		  
-		  
-	  }
 }
 
 function Alarmemyfox_remove() {
