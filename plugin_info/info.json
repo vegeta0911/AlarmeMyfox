@@ -8,7 +8,7 @@
     "os" : {
 	    "min" : 12
      },
-    "pluginVersion": "4.0.1",
+    "pluginVersion": "4.5.1",
     "category": "security",
     "hasOwnDeamon": true,
     "hasDependency" : true,
